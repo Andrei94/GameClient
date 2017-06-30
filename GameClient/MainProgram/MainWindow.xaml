@@ -1,0 +1,35 @@
+﻿<Window x:Class="GameClient.MainProgram.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:mainProgram="clr-namespace:GameClient.MainProgram"
+        Title="Game Client" Height="350" Width="525" MinHeight="350" MinWidth="525">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Most Played" Command="{Binding SortCommand}"/>
+        </Menu>
+        <Grid>
+            <Grid.Resources>
+                <mainProgram:PlaytimeConverter x:Key="PlaytimeConverter" />
+                <mainProgram:RunningGameConverter x:Key="RunningGameConverter" />
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="0" ItemsSource="{Binding Path=Games, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="350"/>
+                        <GridViewColumn Header="Playtime"
+                                        DisplayMemberBinding="{Binding Playtime, Converter={StaticResource PlaytimeConverter}}" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label Grid.Row="1"
+                   Content="{Binding Path=RunningGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RunningGameConverter}}"/>
+        </Grid>
+    </DockPanel>
+</Window>

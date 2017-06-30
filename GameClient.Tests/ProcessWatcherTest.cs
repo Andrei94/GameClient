@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameClient.Game;
+using GameClient.Processes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GameClient.Test
+namespace GameClient.Tests
 {
 	[TestClass]
 	public class ProcessWatcherTest
@@ -32,7 +32,7 @@ namespace GameClient.Test
 		}
 
 		[TestMethod]
-		public void WatchProcessesList()
+		public void GameStartedRunningExited()
 		{
 			watcher.Start += game => OnProcessChanged(game, ProcessWatcherTransitions.GameState.None,
 				ProcessWatcherTransitions.GameState.Started);
@@ -40,7 +40,7 @@ namespace GameClient.Test
 				ProcessWatcherTransitions.GameState.Running);
 			watcher.Exit += game => OnProcessChanged(game, ProcessWatcherTransitions.GameState.Running,
 				ProcessWatcherTransitions.GameState.Exited);
-			watcher.WatchForRunningGameAsync(1).Wait(1);
+			watcher.WatchForRunningGameAsync(1).Wait(2);
 			Assert.AreEqual(ProcessWatcherTransitions.GameState.Exited, watcher.State);
 		}
 

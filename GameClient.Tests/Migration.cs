@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using GameClient.Game;
+using GameClient.MainProgram;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Driver;
 
-namespace GameClient.Test
+namespace GameClient.Tests
 {
 	[TestClass]
 	public class Migration
@@ -11,6 +12,7 @@ namespace GameClient.Test
 		private MongoClient client;
 		private IMongoDatabase db;
 		private const string DbName = "GamesTest";
+		private const string CollectionName = "Games";
 		private IMongoCollection<GameMongo> mongoCollection;
 
 		[TestInitialize]
@@ -21,19 +23,20 @@ namespace GameClient.Test
 			mongoCollection = db.GetCollection<GameMongo>(DbName);
 			if(mongoCollection == null)
 				db.CreateCollection(DbName);
-			mongoCollection = db.GetCollection<GameMongo>(DbName);
+			mongoCollection = db.GetCollection<GameMongo>(CollectionName);
+			mongoCollection.DeleteMany(x => true);
 		}
 
 		[TestMethod]
-		public void TestTimespanConversion()
+		public void TimespanConversion()
 		{
 			Assert.AreEqual(323, ConvertToMinutes(0, 5, 23));
 		}
 
 		[TestMethod]
+		[Ignore]
 		public void WatchProcessesList()
 		{
-			mongoCollection.DeleteMany(x => true);
 			mongoCollection.InsertMany(new List<GameMongo>
 			{
 				new GameMongo
@@ -214,7 +217,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty",
+					Name = "Call of Duty - Multiplayer",
 					ProcessName = "CoDMP.exe",
 					Playtime = ConvertToMinutes(0, 12, 7)
 				},
@@ -226,7 +229,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty: United Offensive",
+					Name = "Call of Duty: United Offensive - Multiplayer",
 					ProcessName = "CoDUOMP.exe",
 					Playtime = ConvertToMinutes(0, 13, 22)
 				},
@@ -238,7 +241,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty: Black Ops",
+					Name = "Call of Duty: Black Ops - Multiplayer",
 					ProcessName = "BlackOpsMP.exe",
 					Playtime = ConvertToMinutes(0, 19, 22)
 				},
@@ -250,13 +253,13 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty: Modern Warfare 2",
+					Name = "Call of Duty: Modern Warfare 2 - Multiplayer",
 					ProcessName = "iw4mp.exe",
 					Playtime = ConvertToMinutes(0, 6, 30)
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty 2",
+					Name = "Call of Duty 2 - Multiplayer",
 					ProcessName = "CoD2MP_s.exe",
 					Playtime = ConvertToMinutes(0, 10, 58)
 				},
@@ -268,13 +271,13 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name ="Call of Duty: World at War",
+					Name = "Call of Duty: World at War",
 					ProcessName = "CoDWaW.exe",
 					Playtime = ConvertToMinutes(0, 13, 44)
 				},
 				new GameMongo
 				{
-					Name ="Call of Duty: World at War",
+					Name = "Call of Duty: World at War - Multiplayer",
 					ProcessName = "CoDWaWmp.exe",
 					Playtime = ConvertToMinutes(0, 13, 44)
 				},
@@ -286,7 +289,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty 4: Modern Warfare",
+					Name = "Call of Duty 4: Modern Warfare - Multiplayer",
 					ProcessName = "iw3mp.exe",
 					Playtime = ConvertToMinutes(0, 15, 21)
 				},
@@ -298,7 +301,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty: Ghosts",
+					Name = "Call of Duty: Ghosts - Multiplayer",
 					ProcessName = "iw6mp64_ship.exe",
 					Playtime = ConvertToMinutes(0, 6, 57)
 				},
@@ -310,7 +313,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "Call of Duty: Modern Warfare 3",
+					Name = "Call of Duty: Modern Warfare 3 - Multiplayer",
 					ProcessName = "iw5mp.exe",
 					Playtime = ConvertToMinutes(0, 9, 2)
 				},
@@ -334,7 +337,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name= "Harry Potter and the Order of Pheonix",
+					Name = "Harry Potter and the Order of Pheonix",
 					ProcessName = "hp.exe",
 					Playtime = ConvertToMinutes(0, 12, 21)
 				},
@@ -558,7 +561,7 @@ namespace GameClient.Test
 				},
 				new GameMongo
 				{
-					Name = "The Sims 4",
+					Name = "The Sims 4 x64",
 					ProcessName = "TS4_x64.exe",
 					Playtime = ConvertToMinutes(0, 23, 49)
 				},
@@ -579,9 +582,15 @@ namespace GameClient.Test
 					Name = "Supreme Ruler 1936",
 					ProcessName = "SupremeRuler1936.exe",
 					Playtime = ConvertToMinutes(0, 16, 54)
+				},
+				new GameMongo
+				{
+					Name = "Hacknet",
+					ProcessName = "Hacknet.exe",
+					Playtime = ConvertToMinutes(0, 0, 34)
 				}
 			});
-			Assert.AreEqual(90, mongoCollection.Count(x => true));
+			Assert.AreEqual(91, mongoCollection.Count(x => true));
 		}
 
 		private static int ConvertToMinutes(int days, int hours, int minutes)
@@ -589,6 +598,21 @@ namespace GameClient.Test
 			const int minutesPerHour = 60;
 			const int hoursPerDay = 24;
 			return minutes + minutesPerHour * hours + hoursPerDay * minutesPerHour * days;
+		}
+
+		[TestMethod]
+		public void UpdatePlaytime()
+		{
+			mongoCollection.InsertOne(new GameMongo {Name = "Some game", ProcessName = "someProc.exe", Playtime = 20});
+			var gameDao = new GameDao(DbName);
+			gameDao.UpdatePlaytime(new GameMongo {Name = "Some game", ProcessName = "someProc.exe", Playtime = 30});
+			Assert.AreEqual(30, gameDao.Games[0].Playtime);
+		}
+
+		[TestCleanup]
+		public void Cleanup()
+		{
+			mongoCollection.DeleteOne(g => g.Name.Equals("Some game"));
 		}
 	}
 }

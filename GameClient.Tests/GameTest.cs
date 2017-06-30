@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using GameClient.Game;
+using GameClient.Processes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GameClient.Test
+namespace GameClient.Tests
 {
 	[TestClass]
 	public class GameTest

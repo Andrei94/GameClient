@@ -1,6 +1,6 @@
 ﻿using WPFCommonUI;
 
-namespace GameClient
+namespace GameClient.MainProgram
 {
 	public partial class MainWindow : IMainView
 	{

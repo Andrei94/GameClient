@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GameClient.Game
+namespace GameClient.Processes
 {
 	public class Delayer
 	{

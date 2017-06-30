@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
+using GameClient.Game;
 
-namespace GameClient.Game
+namespace GameClient.Processes
 {
 	public class ProcessWatcher
 	{
 		private ICollection<ProcessInfo> ProcessSupplier { get; set; }
-		private IEnumerable<Game> GamesSource { get; }
-		private Game gameToWatch;
+		private IEnumerable<Game.Game> GamesSource { get; }
+		private Game.Game gameToWatch;
 		protected Delayer Delayer;
 
-		public ProcessWatcher(IEnumerable<Game> gamesSource)
+		public ProcessWatcher(IEnumerable<Game.Game> gamesSource)
 		{
 			GamesSource = gamesSource;
 			Delayer = new Delayer();
@@ -35,12 +36,11 @@ namespace GameClient.Game
 					delay = Math.Max(60000, delayInSeconds * 1000);
 					started = true;
 				}
-				if(game.IsRunning(ProcessSupplier))
+				else if(game.IsRunning(ProcessSupplier))
 				{
 					Running?.Invoke(gameToWatch);
-					gameToWatch.AddPlaytime(1);
 				}
-				if(started && !game.IsRunning(ProcessSupplier))
+				else if(started && !game.IsRunning(ProcessSupplier))
 				{
 					Exit?.Invoke(gameToWatch);
 					delay = delayInSeconds * 1000;
@@ -51,7 +51,7 @@ namespace GameClient.Game
 			}
 		}
 
-		private Game GameEntityForRunningProcess => GamesSource.FirstOrDefault(game => game.IsRunning(ProcessSupplier)) ??
+		private Game.Game GameEntityForRunningProcess => GamesSource.FirstOrDefault(game => game.IsRunning(ProcessSupplier)) ??
 		                                            new NoRunningGame();
 
 		protected virtual List<ProcessInfo> GetRunningProcesses()
@@ -62,8 +62,8 @@ namespace GameClient.Game
 				.Select(o => new ProcessInfo(o["Name"].ToString(), o["CommandLine"]?.ToString())).ToList();
 		}
 
-		public event Action<Game> Start;
-		public event Action<Game> Running;
-		public event Action<Game> Exit;
+		public event Action<Game.Game> Start;
+		public event Action<Game.Game> Running;
+		public event Action<Game.Game> Exit;
 	}
 }
