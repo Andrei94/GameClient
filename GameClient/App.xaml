@@ -41,9 +41,25 @@
 			</Style.Triggers>
 		</Style>
 		<Style TargetType="Label">
-			<Setter Property="Foreground" Value="White" />
+			<Setter Property="Foreground" Value="Green" />
 			<Setter Property="FontWeight" Value="Bold" />
 			<Setter Property="Background" Value="#FF1E1E1E" />
+		</Style>
+		<Style TargetType="TextBox">
+			<Setter Property="Foreground" Value="Green" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Background" Value="#FF1E1E1E" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Foreground" Value="Green" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Background" Value="#FF1E1E1E" />
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="Foreground" Value="White" />
+					<Setter Property="Background" Value="Blue" />
+				</Trigger>
+			</Style.Triggers>
 		</Style>
 	</Application.Resources>
 </Application>

@@ -58,12 +58,15 @@
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameAdderTest.cs" />
+    <Compile Include="GameDaoTest.cs" />
     <Compile Include="GameTest.cs" />
     <Compile Include="Migration.cs" />
     <Compile Include="RunningGameConverterTest.cs" />
@@ -72,9 +75,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WPFCommonUI\WPFCommonUI\WPFCommonUI.csproj">
+      <Project>{1a6f0482-3b81-49fe-8de4-8c8ff75a63fd}</Project>
+      <Name>WPFCommonUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameClient\GameClient.csproj">
       <Project>{EE043C36-5320-44B5-A2AE-A1BF66A9EFD1}</Project>
       <Name>GameClient</Name>

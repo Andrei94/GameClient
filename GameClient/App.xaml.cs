@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Windows;
 using GameClient.MainProgram;
@@ -23,7 +24,11 @@ namespace GameClient
                 WorkingDirectory = mongoDbPath,
                 WindowStyle = ProcessWindowStyle.Hidden
             });
-            mainViewModel = new GameList(new GameDao("Games"));
+            mainViewModel = new GameList(new GameDao(
+                ConfigurationManager.AppSettings["ConnectionString"],
+                ConfigurationManager.AppSettings["DBName"],
+                ConfigurationManager.AppSettings["Collection"])
+            );
             mainViewModel.Show();
         }
 

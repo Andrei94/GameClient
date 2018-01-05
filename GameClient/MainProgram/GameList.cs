@@ -13,7 +13,7 @@ namespace GameClient.MainProgram
         private bool isGameRunning;
         private int playtime;
         private IEnumerable<Game.Game> games;
-        private readonly GameDao gameSrc;
+        private readonly Dao gameSrc;
 
         public RunningGameInfo RunningGame
         {
@@ -47,12 +47,15 @@ namespace GameClient.MainProgram
 
         public RelayCommand SortCommand { get; }
 
-        public GameList(GameDao src) : base(new MainWindow())
+        public RelayCommand AddCommand { get; }
+
+        public GameList(Dao src) : base(new MainWindow())
         {
             gameSrc = src;
             Games = src.Games;
 
             SortCommand = new RelayCommand(Sort);
+            AddCommand = new RelayCommand(AddGame);
 
             var watcher = new ProcessWatcher(src.Games);
             watcher.Start += game => Task.Run(() => OnStart(game));
@@ -64,6 +67,12 @@ namespace GameClient.MainProgram
         private void Sort(object obj)
         {
             new MostPlayedGames(Games.OrderByDescending(g => g.Playtime)).Show();
+        }
+
+        private void AddGame(object obj)
+        {
+            new GameAdder.GameAdder(gameSrc).ShowDialog();
+            Games = gameSrc.Games;
         }
 
         private void OnStart(Game.Game game)

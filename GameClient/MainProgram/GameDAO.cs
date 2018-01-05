@@ -4,16 +4,16 @@ using MongoDB.Driver;
 
 namespace GameClient.MainProgram
 {
-	public class GameDao
+	public class GameDao : Dao
 	{
 		public List<Game.Game> Games { get; private set; }
 		private readonly IMongoCollection<GameMongo> mongoCollection;
 
-		public GameDao(string dbName)
+	    public GameDao(string conString, string dbName, string collection)
 		{
-			var client = new MongoClient("mongodb://localhost:27017");
+			var client = new MongoClient(conString);
 			var db = client.GetDatabase(dbName);
-			mongoCollection = db.GetCollection<GameMongo>("Games");
+			mongoCollection = db.GetCollection<GameMongo>(collection);
 			SyncContents();
 		}
 
@@ -28,12 +28,18 @@ namespace GameClient.MainProgram
 			SyncContents();
 		}
 
-		private void SyncContents()
-		{
-			var cursor = mongoCollection.FindSync(x => true);
-			Games = new List<Game.Game>();
-			while(cursor.MoveNext())
-				Games.AddRange(cursor.Current);
-		}
-	}
+	    public void Insert(Game.Game game)
+	    {
+	        mongoCollection.InsertOne(new GameMongo(game));
+	        SyncContents();
+        }
+
+	    private void SyncContents()
+	    {
+	        var cursor = mongoCollection.FindSync(x => true);
+	        Games = new List<Game.Game>();
+	        while (cursor.MoveNext())
+	            Games.AddRange(cursor.Current);
+	    }
+    }
 }

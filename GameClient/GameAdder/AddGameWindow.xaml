@@ -1,0 +1,54 @@
+﻿<Window x:Class="GameClient.GameAdder.AddGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Add Game" MinHeight="200" MinWidth="350" MaxHeight="200" MaxWidth="350">
+	<DockPanel>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30" />
+				<RowDefinition Height="30" />
+				<RowDefinition Height="30" />
+				<RowDefinition Height="30" />
+				<RowDefinition Height="45" />
+			</Grid.RowDefinitions>
+			<StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5, 5, 0, 0">
+				<Label Content="Game Name" Width="150" />
+				<TextBox
+					Width="180"
+					Text="{Binding Path=GameName, UpdateSourceTrigger=PropertyChanged}" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5, 5, 0, 0">
+				<Label Content="Process Name" Width="150" />
+				<TextBox Width="180"
+				         Text="{Binding Path=ProcessName, UpdateSourceTrigger=PropertyChanged}" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5, 5, 0, 0">
+				<Label Content="Argument (optional)" Width="150" />
+				<TextBox Width="180"
+				         Text="{Binding Path=Argument, UpdateSourceTrigger=PropertyChanged}" />
+			</StackPanel>
+			<StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5, 5, 0, 0">
+				<Label Content="Default playtime (ditto)" Width="150" />
+				<TextBox TextAlignment="Center"
+				         Width="30"
+				         Text="{Binding Path=Days, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Content="d" Width="20" />
+				<TextBox TextAlignment="Center"
+				         Width="30"
+				         Text="{Binding Path=Hours, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Content="h" Width="20" />
+				<TextBox TextAlignment="Center"
+				         Width="30"
+				         Text="{Binding Path=Minutes, UpdateSourceTrigger=PropertyChanged}"/>
+				<Label Content="m" Width="20" />
+			</StackPanel>
+			<StackPanel Grid.Row="4" Orientation="Horizontal">
+				<Button Content="Ok" Margin="0, 5, 5, 5" MinWidth="168" Command="{Binding AddGameCommand}" />
+				<Button Content="Cancel" Margin="0, 5, 5, 5" MinWidth="168" Command="{Binding CloseWindowCommand}" />
+			</StackPanel>
+		</Grid>
+	</DockPanel>
+</Window>

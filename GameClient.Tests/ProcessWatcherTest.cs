@@ -40,12 +40,19 @@ namespace GameClient.Tests
 				ProcessWatcherTransitions.GameState.Running);
 			watcher.Exit += game => OnProcessChanged(game, ProcessWatcherTransitions.GameState.Running,
 				ProcessWatcherTransitions.GameState.Exited);
-			watcher.WatchForRunningGameAsync(1).Wait(2);
+			watcher.WatchForRunningGameAsync(1).Wait(10);
 			Assert.AreEqual(ProcessWatcherTransitions.GameState.Exited, watcher.State);
 		}
 
-		// ReSharper disable once UnusedParameter.Local
-		private void OnProcessChanged(Game.Game game, ProcessWatcherTransitions.GameState oldState,
+	    [TestMethod]
+	    public void NoHooksForEvents()
+	    {
+	        watcher.WatchForRunningGameAsync(1).Wait(10);
+	        Assert.AreEqual(ProcessWatcherTransitions.GameState.None, watcher.State);
+	    }
+
+        // ReSharper disable once UnusedParameter.Local
+        private void OnProcessChanged(Game.Game game, ProcessWatcherTransitions.GameState oldState,
 			ProcessWatcherTransitions.GameState newState)
 		{
 			Assert.IsNotNull(game);

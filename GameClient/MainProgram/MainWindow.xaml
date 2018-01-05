@@ -9,6 +9,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Most Played" Command="{Binding SortCommand}"/>
+            <MenuItem Header="Add New Game" Command="{Binding AddCommand}"/>
         </Menu>
         <Grid>
             <Grid.Resources>
@@ -28,7 +29,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Label Grid.Row="1"
+			<Label Grid.Row="1" Foreground="White"
                    Content="{Binding Path=RunningGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RunningGameConverter}}"/>
         </Grid>
     </DockPanel>

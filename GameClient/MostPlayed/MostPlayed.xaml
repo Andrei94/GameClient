@@ -10,14 +10,14 @@
         <Grid.Resources>
             <mainProgram:PlaytimeConverter x:Key="PlaytimeConverter" />
         </Grid.Resources>
-        <ListView ItemsSource="{Binding Path=Games}">
-            <ListView.View>
-                <GridView AllowsColumnReorder="True">
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="350"/>
-                    <GridViewColumn Header="Playtime"
+		<ListView ItemsSource="{Binding Path=Games}">
+			<ListView.View>
+				<GridView AllowsColumnReorder="True">
+					<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="350"/>
+					<GridViewColumn Header="Playtime"
                                     DisplayMemberBinding="{Binding Playtime, Converter={StaticResource PlaytimeConverter}}" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</Grid>
 </Window>

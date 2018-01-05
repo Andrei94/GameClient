@@ -13,8 +13,7 @@ namespace GameClient.MainProgram
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if(value == null) return DefaultValue;
-			int playtime;
-			return !int.TryParse(value.ToString(), out playtime)
+		    return !int.TryParse(value.ToString(), out var playtime)
 				? DefaultValue
 				: ConvertPlaytime(playtime);
 		}

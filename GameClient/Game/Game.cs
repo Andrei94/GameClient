@@ -23,7 +23,14 @@ namespace GameClient.Game
 		{
 			Playtime += minutes;
 		}
-	}
+
+	    public static int ConvertToMinutes(int days, int hours, int minutes)
+	    {
+	        const int minutesPerHour = 60;
+	        const int hoursPerDay = 24;
+	        return minutes + minutesPerHour * hours + hoursPerDay * minutesPerHour * days;
+	    }
+    }
 
 	public class NoRunningGame : Game
 	{

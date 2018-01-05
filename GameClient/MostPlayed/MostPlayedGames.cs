@@ -16,5 +16,5 @@ namespace GameClient.MostPlayed
 		{
 			View.Show();
 		}
-	}
+    }
 }
